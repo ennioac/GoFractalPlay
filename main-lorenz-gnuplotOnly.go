@@ -27,6 +27,14 @@ type GraphingCoordinates struct {
 	Z float64
 }
 
+func NewGraphingCoordinates() GraphingCoordinates {
+	return GraphingCoordinates{
+		X: 1.0,
+		Y: 1.0,
+		Z: 1.0,
+	}
+}
+
 func main() {
 
 	/********/
@@ -44,12 +52,13 @@ func main() {
 	var i int = 0                          // loop itterator only
 	var k = GraphingCoordinates{}          // Loop itteration only
 
-	current_coordinates := GraphingCoordinates{
-		// Really wish I could inialize these in the struct itself!  It may not be necessary (like start plotting somewhere else rather than 1.0),  but I'd like to have that option!
-		X: 1.0,
-		Y: 1.0,
-		Z: 1.0,
-	}
+	// Current_coordinates := new(GraphingCoordinates)
+	// 	// Really wish I could inialize these in the struct itself!  It may not be necessary (like start plotting somewhere else rather than 1.0),  but I'd like to have that option!
+	// 	X: 1.0,
+	// 	Y: 1.0,
+	// 	Z: 1.0,
+	// }
+	Current_coordinates := NewGraphingCoordinates()
 	var CoordinateList []GraphingCoordinates
 
 	/**************/
@@ -57,15 +66,15 @@ func main() {
 	/**************/
 
 	for i = 0; i < steps; i++ {
-		dx = sigma * (current_coordinates.Y - current_coordinates.X) * dt
-		dy = (current_coordinates.X*(rho-current_coordinates.Z) - current_coordinates.Y) * dt
-		dz = (current_coordinates.X*current_coordinates.Y - beta*current_coordinates.Z) * dt
-		current_coordinates.X += dx
-		current_coordinates.Y += dy
-		current_coordinates.Z += dz
+		dx = sigma * (Current_coordinates.Y - Current_coordinates.X) * dt
+		dy = (Current_coordinates.X*(rho-Current_coordinates.Z) - Current_coordinates.Y) * dt
+		dz = (Current_coordinates.X*Current_coordinates.Y - beta*Current_coordinates.Z) * dt
+		Current_coordinates.X += dx
+		Current_coordinates.Y += dy
+		Current_coordinates.Z += dz
 
-		//fmt.Printf("%v , %v , %v\n", current_coordinates.X, current_coordinates.Y, current_coordinates.Z)
-		CoordinateList = append(CoordinateList, current_coordinates)
+		//fmt.Printf("%v , %v , %v\n", Current_coordinates.X, Current_coordinates.Y, Current_coordinates.Z)
+		CoordinateList = append(CoordinateList, Current_coordinates)
 	}
 
 	// Output for redirection to GNUPlot
