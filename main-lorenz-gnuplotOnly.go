@@ -10,6 +10,7 @@ package main
                	https://deepwiki.com/gonum/plot/1.1-installation-and-getting-started
                	https://pkg.go.dev/gonum.org/v1/plot/plotter#XYRange
                	https://duckduckgo.com/?q=gnuplot+example+with+x%2Cy%2Cz+points+embedded&t=ffab&atb=v268-1&ia=web as of 2025-08-27
+				https://unix.stackexchange.com/questions/257679/how-to-keep-gnuplot-x11-graph-window-open-until-manually-closed )2025-08-30
 	History:
    				v1.0 2025-08-24: First Customer Ship (FCS)
    				v1.1 2025-08-27: GNUPlot compatible output because it looks nice and I can rotate the output (N.B. you'll have to install GNUPlot on your own.
@@ -50,7 +51,7 @@ func main() {
 
 	var dx, dy, dz float64 = 0.0, 0.0, 0.0 // Initial conditions
 	var i int = 0                          // loop itterator only
-	var k = GraphingCoordinates{}          // Loop itteration only
+	//var k = GraphingCoordinates{}          // Loop itteration only
 
 	// Current_coordinates := new(GraphingCoordinates)
 	// 	// Really wish I could inialize these in the struct itself!  It may not be necessary (like start plotting somewhere else rather than 1.0),  but I'd like to have that option!
@@ -78,12 +79,30 @@ func main() {
 	}
 
 	// Output for redirection to GNUPlot
+	// fmt.Println("$points << EOD")
+	// for _, k = range CoordinateList {
+	// 	fmt.Printf("%v %v %v\n", k.X, k.Y, k.Z) // Print to STDOUT as well.
+	// }
+	// fmt.Println("EOD")
+	// fmt.Println("splot $points using 1:2:3 with points pointtype 7 pointsize 1 linecolor rgb \"blue\"")
+	GNUPlotOutput(CoordinateList)
+
+	os.Exit(0) // Because I always prefer to return properly with a code of my choosing...
+}
+
+func GNUPlotOutput(coordinateList []GraphingCoordinates) {
+	var k = GraphingCoordinates{} // Loop itteration only
+
+	//fmt.Println("set view 45, 30  # Set azimuth to 45 degrees and elevation to 30 degrees")
+	fmt.Println("set terminal qt")
+	fmt.Println("set mouse")
+	fmt.Println("unset grid")
 	fmt.Println("$points << EOD")
-	for _, k = range CoordinateList {
+	for _, k = range coordinateList {
 		fmt.Printf("%v %v %v\n", k.X, k.Y, k.Z) // Print to STDOUT as well.
 	}
 	fmt.Println("EOD")
 	fmt.Println("splot $points using 1:2:3 with points pointtype 7 pointsize 1 linecolor rgb \"blue\"")
+	fmt.Println("pause mouse close") // This allows for the ability to rotate the image and not need "--persist" on the command line.
 
-	os.Exit(0) // Because I always prefer to return properly with a code of my choosing...
 }
